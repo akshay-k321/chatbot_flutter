@@ -26,7 +26,7 @@ final ButtonStyle kSubmitButtonStyle = ButtonStyle(
 const TextStyle kHeadingTextStyle = TextStyle(
   fontSize: 32,
   fontWeight: FontWeight.bold,
-  color: kPrimaryColor,
+  color: Colors.white,
 );
 
 const EdgeInsetsGeometry kFormsCardInnerPadding =

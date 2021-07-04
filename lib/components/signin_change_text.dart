@@ -5,8 +5,10 @@ class SignInChangeText extends StatelessWidget {
   final String question;
   final String action;
   final Function onPressed;
+  final Color actionColor;
 
-  const SignInChangeText({this.question, this.action, this.onPressed});
+  const SignInChangeText(
+      {this.question, this.action, this.onPressed, this.actionColor});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class SignInChangeText extends StatelessWidget {
           child: Text(
             action,
             style: TextStyle(
-              color: kPrimaryColor,
+              color: actionColor,
               fontSize: kBodyTextSize,
             ),
           ),

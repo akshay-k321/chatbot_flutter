@@ -19,5 +19,5 @@ void main() => runApp(MaterialApp(
         LoginPage.id: (context) => LoginPage(),
         ChatPage.id: (context) => ChatPage(),
       },
-      initialRoute: LoginPage.id,
+      initialRoute: SplashScreenPage.id,
     ));

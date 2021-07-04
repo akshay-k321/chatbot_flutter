@@ -1,11 +1,11 @@
 import 'package:chatbot_demo/components/form_text_field.dart';
 import 'package:chatbot_demo/components/forms_card.dart';
+import 'package:chatbot_demo/components/rounded_button.dart';
 import 'package:chatbot_demo/components/signin_change_text.dart';
 import 'package:chatbot_demo/constants.dart';
 import 'package:chatbot_demo/screens/chat_page.dart';
 import 'package:chatbot_demo/screens/signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -19,23 +19,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   String email, passwd;
-  FirebaseApp app;
-  FirebaseAuth _auth;
-
-  @override
-  void initState() {
-    initializeApp();
-    super.initState();
-  }
-
-  void initializeApp() async {
-    try {
-      app = await Firebase.initializeApp();
-      _auth = FirebaseAuth.instance;
-    } catch (e) {
-      print(e);
-    }
-  }
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +50,9 @@ class _LoginPageState extends State<LoginPage> {
                 onChanged: (value) => passwd = value,
                 obscureText: true,
               ),
-              ElevatedButton(
+              RoundedButton(
+                color: Colors.lightBlueAccent,
+                title: 'Login',
                 onPressed: () async {
                   if (passwd != null && email != null && passwd.length >= 6) {
                     await _auth.signInWithEmailAndPassword(
@@ -75,8 +61,6 @@ class _LoginPageState extends State<LoginPage> {
                   } else
                     print('Login error');
                 },
-                child: Text('LOGIN'),
-                style: kSubmitButtonStyle,
               ),
               SizedBox(
                 height: 20.0,
@@ -84,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
               SignInChangeText(
                 question: 'Don\'t have an account? ',
                 action: 'SignUp',
+                actionColor: Colors.blueAccent,
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, SignUpPage.id);
                 },

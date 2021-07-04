@@ -1,3 +1,4 @@
+import 'package:chatbot_demo/screens/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +30,12 @@ class _ChatPageState extends State<ChatPage> {
         title: Text('ChatBot'),
       ),
       body: Center(
-        child: Text('Welcome ${user.email}'),
+        child: GestureDetector(
+            onLongPress: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushReplacementNamed(context, LoginPage.id);
+            },
+            child: Text('Welcome ${user.email}')),
       ),
     );
   }

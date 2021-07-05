@@ -36,3 +36,22 @@ const EdgeInsetsGeometry kFormsCardOuterPadding =
 
 const double kCardElevation = 5;
 const double kBodyTextSize = 16.0;
+
+/*------------------------------------*/
+const kSendButtonTextStyle = TextStyle(
+  color: Colors.blueAccent,
+  fontWeight: FontWeight.bold,
+  fontSize: 18.0,
+);
+
+const kMessageTextFieldDecoration = InputDecoration(
+  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+  hintText: 'Type your message here...',
+  border: InputBorder.none,
+);
+
+const kMessageContainerDecoration = BoxDecoration(
+  border: Border(
+    top: BorderSide(color: Colors.blueAccent, width: 2.0),
+  ),
+);

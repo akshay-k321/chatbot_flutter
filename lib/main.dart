@@ -1,8 +1,8 @@
 import 'package:chatbot_demo/constants.dart';
-import 'package:chatbot_demo/screens/chat_page.dart';
-import 'package:chatbot_demo/screens/login_page.dart';
-import 'package:chatbot_demo/screens/signup_page.dart';
-import 'package:chatbot_demo/screens/splash_screen_page.dart';
+import 'package:chatbot_demo/screens/chat_screen.dart';
+import 'package:chatbot_demo/screens/login_screen.dart';
+import 'package:chatbot_demo/screens/signup_screen.dart';
+import 'package:chatbot_demo/screens/splash_screen.dart';
 import 'package:chatbot_demo/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -13,11 +13,11 @@ void main() => runApp(MaterialApp(
       ),
       darkTheme: ThemeData.dark().copyWith(),
       routes: {
-        SplashScreenPage.id: (context) => SplashScreenPage(),
+        SplashScreen.id: (context) => SplashScreen(),
         WelcomeScreen.id: (context) => WelcomeScreen(),
-        SignUpPage.id: (context) => SignUpPage(),
-        LoginPage.id: (context) => LoginPage(),
-        ChatPage.id: (context) => ChatPage(),
+        SignUpScreen.id: (context) => SignUpScreen(),
+        LoginScreen.id: (context) => LoginScreen(),
+        ChatScreen.id: (context) => ChatScreen(),
       },
-      initialRoute: SplashScreenPage.id,
+      initialRoute: SplashScreen.id,
     ));

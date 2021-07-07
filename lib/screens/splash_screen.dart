@@ -1,20 +1,20 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:chatbot_demo/screens/chat_page.dart';
+import 'package:chatbot_demo/screens/chat_screen.dart';
 import 'package:chatbot_demo/screens/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-class SplashScreenPage extends StatefulWidget {
-  const SplashScreenPage({key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({key}) : super(key: key);
 
   static const id = 'splash';
 
   @override
-  _SplashScreenPageState createState() => _SplashScreenPageState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenPageState extends State<SplashScreenPage> {
+class _SplashScreenState extends State<SplashScreen> {
   bool showSpinner = false;
   int pause = 500;
 
@@ -36,7 +36,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
               pause: Duration(milliseconds: pause),
               onFinished: () {
                 if (FirebaseAuth.instance.currentUser != null)
-                  Navigator.pushReplacementNamed(context, ChatPage.id);
+                  Navigator.pushReplacementNamed(context, ChatScreen.id);
                 else
                   Navigator.pushReplacementNamed(context, WelcomeScreen.id);
               },

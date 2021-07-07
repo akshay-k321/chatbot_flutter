@@ -1,6 +1,6 @@
 import 'package:chatbot_demo/components/message_bubble.dart';
 import 'package:chatbot_demo/constants.dart';
-import 'package:chatbot_demo/screens/login_page.dart';
+import 'package:chatbot_demo/screens/login_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +9,15 @@ User user;
 FirebaseAuth _auth = FirebaseAuth.instance;
 FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-class ChatPage extends StatefulWidget {
-  const ChatPage({key}) : super(key: key);
+class ChatScreen extends StatefulWidget {
+  const ChatScreen({key}) : super(key: key);
   static const String id = 'chat';
 
   @override
-  _ChatPageState createState() => _ChatPageState();
+  _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatScreenState extends State<ChatScreen> {
   TextEditingController controller = TextEditingController();
   String message;
 
@@ -39,7 +39,7 @@ class _ChatPageState extends State<ChatPage> {
           IconButton(
               onPressed: () {
                 _auth.signOut();
-                Navigator.pushReplacementNamed(context, LoginPage.id);
+                Navigator.pushReplacementNamed(context, LoginScreen.id);
               },
               icon: Icon(Icons.close)),
         ],

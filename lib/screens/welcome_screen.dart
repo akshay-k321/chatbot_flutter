@@ -1,7 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chatbot_demo/components/rounded_button.dart';
-import 'package:chatbot_demo/screens/login_page.dart';
-import 'package:chatbot_demo/screens/signup_page.dart';
+import 'package:chatbot_demo/screens/login_screen.dart';
+import 'package:chatbot_demo/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -29,15 +29,21 @@ class WelcomeScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 30.0),
-            RoundedButton(
-              title: 'Login',
-              color: Colors.lightBlueAccent,
-              onPressed: () => Navigator.pushNamed(context, LoginPage.id),
+            Hero(
+              tag: 'loginBtn',
+              child: RoundedButton(
+                title: 'Login',
+                color: Colors.lightBlueAccent,
+                onPressed: () => Navigator.pushNamed(context, LoginScreen.id),
+              ),
             ),
-            RoundedButton(
-              title: 'SignUp',
-              color: Colors.lightBlue,
-              onPressed: () => Navigator.pushNamed(context, SignUpPage.id),
+            Hero(
+              tag: 'signupBtn',
+              child: RoundedButton(
+                title: 'SignUp',
+                color: Colors.lightBlue,
+                onPressed: () => Navigator.pushNamed(context, SignUpScreen.id),
+              ),
             ),
           ],
         ),

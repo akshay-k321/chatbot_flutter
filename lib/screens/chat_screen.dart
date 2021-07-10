@@ -1,9 +1,12 @@
+import 'package:chatbot_demo/components/circlular_button.dart';
 import 'package:chatbot_demo/components/message_bubble.dart';
 import 'package:chatbot_demo/constants.dart';
 import 'package:chatbot_demo/screens/login_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dialogflow_grpc/dialogflow_grpc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 User user;
 FirebaseAuth _auth = FirebaseAuth.instance;
@@ -19,7 +22,8 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   TextEditingController controller = TextEditingController();
-  String message;
+  DialogflowGrpcV2Beta1 dialogflow;
+  String message = '';
 
   @override
   void initState() {
@@ -27,8 +31,11 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
   }
 
-  void initializeChatPage() {
+  void initializeChatPage() async {
     user = FirebaseAuth.instance.currentUser;
+    final serviceAccount = ServiceAccount.fromString(
+        '${(await rootBundle.loadString('assets/credentials.json'))}');
+    dialogflow = DialogflowGrpcV2Beta1.viaServiceAccount(serviceAccount);
   }
 
   @override
@@ -52,42 +59,66 @@ class _ChatScreenState extends State<ChatScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             MessageBuilder(),
-            Container(
-              decoration: kMessageContainerDecoration,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                      child: TextField(
-                    controller: controller,
-                    decoration: kMessageTextFieldDecoration,
-                    onChanged: (value) {
-                      message = value;
-                    },
-                  )),
-                  TextButton(
-                    onPressed: () {
-                      try {
-                        _fireStore
-                            .collection('messages')
-                            .doc(user.uid)
-                            .collection('usrMsgs')
-                            .add({
-                          'text': message,
-                          'self': true,
-                          'time': FieldValue.serverTimestamp(),
-                        });
-                        controller.clear();
-                      } catch (e) {
-                        print(e);
-                      }
-                    },
-                    child: Text(
-                      'Send',
-                      style: kSendButtonTextStyle,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 10.0,),
+              child: Container(
+                decoration: kMessageContainerDecoration,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        child: TextField(
+                      controller: controller,
+                      decoration: kMessageTextFieldDecoration,
+                      textCapitalization: TextCapitalization.sentences,
+                      onChanged: (value) {
+                        message = value;
+                      },
+                    )),
+                    CircularButton(
+                      color: Colors.blueAccent,
+                      icon: Icon(
+                        Icons.send,
+                        color: Colors.white,
+                        size: 30.0,
+                      ),
+                      onPressed: () async {
+                        if (message != '') {
+                          try {
+                            _fireStore
+                                .collection('messages')
+                                .doc(user.uid)
+                                .collection('usrMsgs')
+                                .add({
+                              'text': message,
+                              'self': true,
+                              'time': FieldValue.serverTimestamp(),
+                            });
+                            controller.clear();
+                            final data =
+                                await dialogflow.detectIntent(message, 'en-US');
+                            String fulfillmentText =
+                                data.queryResult.fulfillmentText;
+                            if (fulfillmentText.isNotEmpty) {
+                              _fireStore
+                                  .collection('messages')
+                                  .doc(user.uid)
+                                  .collection('usrMsgs')
+                                  .add({
+                                'text': fulfillmentText,
+                                'self': false,
+                                'time': FieldValue.serverTimestamp(),
+                              });
+                            }
+                          } catch (e) {
+                            print('Exception: $e');
+                          }
+                        }
+                        message = '';
+                      },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -153,7 +184,7 @@ class MessageBuilder extends StatelessWidget {
               child: ListView(
                 reverse: true,
                 padding: EdgeInsets.symmetric(
-                  horizontal: 10.0,
+                  horizontal: 5.0,
                   vertical: 20.0,
                 ),
                 children: messageWidgets,

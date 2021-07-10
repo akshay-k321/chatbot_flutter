@@ -51,7 +51,12 @@ const kMessageTextFieldDecoration = InputDecoration(
 );
 
 const kMessageContainerDecoration = BoxDecoration(
-  border: Border(
-    top: BorderSide(color: Colors.blueAccent, width: 2.0),
+  borderRadius: BorderRadius.all(Radius.circular(50.0)),
+  border: Border.symmetric(
+    vertical: BorderSide(color: Colors.blueAccent),
+    horizontal: BorderSide(color: Colors.blueAccent),
   ),
+  /*Border(
+    top: BorderSide(color: Colors.blueAccent, width: 2.0),
+  ),*/
 );

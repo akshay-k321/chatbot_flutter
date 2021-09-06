@@ -87,9 +87,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           await signUp
                               .saveUserData(_firestore, context)
                               .whenComplete(() {
-                            if (signUp.dataAdded)
+                            if (signUp.dataAdded) {
+                              Navigator.popUntil(context, (route) {
+                                if (route.isFirst) return true;
+                                return false;
+                              });
                               Navigator.pushReplacementNamed(
                                   context, ChatScreen.id);
+                            }
                           });
                       });
                     } else

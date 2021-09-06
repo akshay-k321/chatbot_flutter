@@ -60,9 +60,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     final validate = login.validate();
                     if (!validate['error']) {
                       await login.performLogin(_auth, context).whenComplete(() {
-                        if (login.loginSuccess)
+                        if (login.loginSuccess) {
+                          Navigator.popUntil(context, (route) {
+                            if (route.isFirst) return true;
+                            return false;
+                          });
                           Navigator.pushReplacementNamed(
                               context, ChatScreen.id);
+                        }
                       });
                     } else
                       Toast(context).showToast(

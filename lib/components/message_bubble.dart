@@ -53,7 +53,7 @@ class MessageBubble extends StatelessWidget {
                             : Radius.circular(0.0),
                       ),
                 elevation: 3.0,
-                color: isMe ? Colors.lightBlue : Colors.white,
+                color: isMe ? Colors.blueAccent : Colors.white,
                 child: Padding(
                     padding:
                         EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),

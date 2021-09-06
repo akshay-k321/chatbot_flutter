@@ -9,21 +9,31 @@ class FormsCard extends StatelessWidget {
 
   final List<Widget> children;
 
+  double getCardAspectRatio(MediaQueryData mq) {
+    double r = mq.size.width / mq.size.width;
+    if (r > 1) r = 1 / r;
+    return r;
+  }
+
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mq = MediaQuery.of(context);
     return Padding(
       padding: kFormsCardOuterPadding,
-      child: Container(
-        padding: kFormsCardInnerPadding,
-        /*decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-        ),*/
-        child: getFormBox(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: children ?? [],
+      child: Flexible(
+        child: Container(
+          padding: kFormsCardInnerPadding,
+          width: 400.0,
+          child: AspectRatio(
+            aspectRatio: 9 / 16,
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: children ?? [],
+              ),
+            ),
           ),
         ),
       ),
@@ -35,7 +45,7 @@ class FormsCard extends StatelessWidget {
       return Container(
         child: child,
       );
-    else
+    else if (Platform.isAndroid || Platform.isIOS)
       return SizedBox(
         width: 300.0,
         child: child,

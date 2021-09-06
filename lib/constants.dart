@@ -47,7 +47,14 @@ const kSendButtonTextStyle = TextStyle(
 const kMessageTextFieldDecoration = InputDecoration(
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   hintText: 'Type your message here...',
-  border: InputBorder.none,
+  border: OutlineInputBorder(
+    borderSide: BorderSide(
+      color: Colors.blueAccent,
+      width: 2.0,
+      style: BorderStyle.solid,
+    ),
+    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+  ),
 );
 
 const kMessageContainerDecoration = BoxDecoration(
@@ -60,3 +67,36 @@ const kMessageContainerDecoration = BoxDecoration(
     top: BorderSide(color: Colors.blueAccent, width: 2.0),
   ),*/
 );
+
+String monthName(int month, {bool fullname = false}) {
+  Map<int, String> months = {
+    1: 'January',
+    2: 'February',
+    3: 'March',
+    4: 'April',
+    5: 'May',
+    6: 'June',
+    7: 'July',
+    8: 'August',
+    9: 'September',
+    10: 'October',
+    11: 'November',
+    12: 'December',
+  };
+  if (fullname) return months[month];
+  return months[month].substring(0, 3);
+}
+
+String weekDayName(int day, {bool fullname = false}) {
+  Map<int, String> days = {
+    1: 'Sunday',
+    2: 'Monday',
+    3: 'Tuesday',
+    4: 'Wednesday',
+    5: 'Thursday',
+    6: 'Friday',
+    7: 'Saturday',
+  };
+  if (fullname) return days[day];
+  return days[day].substring(0, 3);
+}

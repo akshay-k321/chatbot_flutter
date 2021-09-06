@@ -1,4 +1,5 @@
 import 'package:chatbot_demo/components/circlular_button.dart';
+import 'package:chatbot_demo/components/date_display.dart';
 import 'package:chatbot_demo/components/message_bubble.dart';
 import 'package:chatbot_demo/constants.dart';
 import 'package:chatbot_demo/screens/login_screen.dart';
@@ -60,9 +61,12 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             MessageBuilder(),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 10.0,),
+              padding: const EdgeInsets.symmetric(
+                vertical: 8.0,
+                horizontal: 10.0,
+              ),
               child: Container(
-                decoration: kMessageContainerDecoration,
+                //decoration: kMessageContainerDecoration,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -138,6 +142,25 @@ class MessageBuilder extends StatelessWidget {
     );
   }
 
+  String getTimeStampDate(Timestamp ts) {
+    String date = '';
+    DateTime dt = ts.toDate();
+    DateTime today = DateTime.now();
+    if (dt.day == today.day)
+      date = 'Today';
+    else if (today.difference(dt).inDays <= 1)
+      date = 'Yesterday';
+    else if (today.difference(dt).inDays < 7)
+      date = weekDayName(dt.weekday, fullname: true);
+    else
+      date = '${dt.year} ${monthName(dt.month)} ${dt.day}, ${weekDayName(
+        dt.weekday,
+        fullname: true,
+      )}';
+
+    return date;
+  }
+
   @override
   Widget build(BuildContext context) {
     try {
@@ -158,13 +181,13 @@ class MessageBuilder extends StatelessWidget {
               ),
             );
           } else {
-            List<MessageBubble> messageWidgets = [];
+            List<Widget> messageWidgets = [];
             List<Map<String, dynamic>> msgList = [];
             int listLength = 0;
             for (var msg in snapshot.data.docs.reversed) {
               final txt = msg.get('text');
               final isMe = msg.get('self');
-              final time = msg.get('time');
+              final Timestamp time = msg.get('time');
               //final sender = msg.get('sender');
               msgList.add({
                 'text': txt,
@@ -176,10 +199,19 @@ class MessageBuilder extends StatelessWidget {
               if (listLength > 1) {
                 final last = msgList[listLength - 2];
                 messageWidgets.add(getMsgBubble(last, last['isMe'] == isMe));
+                if (last['time'] != null &&
+                    time.toDate().day != last['time'].toDate().day)
+                  messageWidgets
+                      .add(DateDisplay(date: getTimeStampDate(last['time'])));
               }
             }
-            if (listLength > 0)
+            if (listLength > 0) {
               messageWidgets.add(getMsgBubble(msgList[listLength - 1], false));
+              messageWidgets.add(DateDisplay(
+                  date: getTimeStampDate(
+                msgList[listLength - 1]['time'],
+              )));
+            }
             return Expanded(
               child: ListView(
                 reverse: true,
